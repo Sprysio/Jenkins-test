@@ -7,23 +7,19 @@ pipeline {
     triggers {
         pollSCM '*/5 * * * *'
       }
-      environment {
-        GITHUB_TOKEN = credentials('2178dedf-778c-4152-9edb-647d2d769f96')  // Replace 'github-token-id' with the ID of your GitHub token in Jenkins credentials
-    }
+      
       post{
         always {  
              echo 'This will always run'  
          }  
          success {  
              echo 'This will run only if successful'  
-             updateGitHubStatus('success')
          }  
          failure {  
-            echo 'This will run only if the build fails'
-            updateGitHubStatus('failure')         }  
+             mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "sebastianfors123@tutanota.com";  
+         }  
          unstable {  
              echo 'This will run only if the run was marked as unstable'  
-             updateGitHubStatus('failure')
          }  
          changed {  
              echo 'This will run only if the state of the Pipeline has changed'  
