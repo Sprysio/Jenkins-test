@@ -48,11 +48,18 @@ pipeline {
             }
         }
         stage('Deliver') {
+            agent{
+                docker{
+                    label 'docker'
+                    image 'jenkinsci/docker-inbound-agent'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
                 echo 'Deliver....'
                 sh '''
                 cd myapp
-                docker build -f sprysio/jenkins_test .
+                docker build -t my-app -f sprysio/jenkins_test .
                 '''
             }
         }
