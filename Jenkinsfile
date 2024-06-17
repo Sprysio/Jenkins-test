@@ -4,6 +4,9 @@ pipeline {
             label 'docker-agent-python3'
             }
       }
+      tools{
+        docker 'Docker'
+      }
     triggers {
         pollSCM '*/5 * * * *'
       }
@@ -28,20 +31,6 @@ pipeline {
          }
       }
     stages {
-        stage('Setup Docker') {
-            steps {
-                sh '''
-                # Install Docker CLI if not already installed
-                if ! command -v docker &> /dev/null; then
-                    echo "Docker not found, installing..."
-                    sudo apt-get update
-                    sudo apt-get install -y docker.io
-                else
-                    echo "Docker is already installed"
-                fi
-                '''
-            }
-        }
         stage('Build') {
             steps {
                 echo "Building.."
@@ -67,7 +56,7 @@ pipeline {
                 echo 'Deliver....'
                 sh '''
                 cd myapp
-                sudo docker build -t my-app -f sprysio/jenkins_test .
+                docker build -t my-app -f sprysio/jenkins_test .
                 '''
             }
         }
