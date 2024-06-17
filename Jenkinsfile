@@ -1,7 +1,10 @@
 pipeline {
     agent { 
-        label 'docker-agent-alpine'
-      }
+        docker {
+            image 'sprysio/python_agent:python'
+            args '-v /var/run/docker.sock:/var/run/docker.sock' 
+        }
+    }
     triggers {
         pollSCM '*/5 * * * *'
       } 
@@ -21,7 +24,7 @@ pipeline {
                 echo "Testing.."
                 sh '''
                 cd myapp
-                docker run -d my-app:${env.BUILD_ID}
+                docker run my-app:${BUILD_ID}
                 '''
             }
         }
