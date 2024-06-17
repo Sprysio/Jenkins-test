@@ -12,7 +12,7 @@ pipeline {
                 echo 'Build docker image....'
                 sh '''
                 cd myapp
-                docker build -t my-app:${env.BUILD_ID} -f Dockerfile .
+                docker build -t my-app:${BUILD_ID} -f Dockerfile .
                 '''
             }
         }

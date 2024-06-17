@@ -1,12 +1,14 @@
 FROM sprysio/python_agent:python
 
-RUN python3 -m venv venv
- 
-RUN source venv/bin/activate
+WORKDIR /myapp
 
-RUN pip install -r requirements.txt
+COPY . .
+
+RUN python3 -m venv venv \
+    && . venv/bin/activate \
+    && pip install -r requirements.txt
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s \ 
-            --retries=3 CMD [ "python3 hello.py" ]
+            --retries=3 CMD [ "python3", "hello.py" ]
 
-RUN sh python3 hello.py --name=Forsen
+CMD [ "sh", "-c", ". venv/bin/activate && python3 hello.py --name=Forsen" ]
