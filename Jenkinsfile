@@ -27,8 +27,8 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                cd myapp
                 source ${VENV_DIR}/bin/activate
+                cd myapp
                 python3 hello.py
                 python3 hello.py --name=Forsen
                 '''
