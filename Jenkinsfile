@@ -28,6 +28,20 @@ pipeline {
          }
       }
     stages {
+        stage('Setup Docker') {
+            steps {
+                sh '''
+                # Install Docker CLI if not already installed
+                if ! command -v docker &> /dev/null; then
+                    echo "Docker not found, installing..."
+                    apt-get update
+                    apt-get install -y docker.io
+                else
+                    echo "Docker is already installed"
+                fi
+                '''
+            }
+        }
         stage('Build') {
             steps {
                 echo "Building.."
@@ -48,13 +62,7 @@ pipeline {
             }
         }
         stage('Deliver') {
-            agent{
-                docker{
-                    label 'docker-agent-python3'
-                    image 'jenkinsci/docker-inbound-agent'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
+            
             steps {
                 echo 'Deliver....'
                 sh '''
