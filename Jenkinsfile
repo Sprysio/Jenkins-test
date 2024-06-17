@@ -5,7 +5,7 @@ pipeline {
             }
       }
       tools{
-        docker 'Docker'
+        docker 'latest'
       }
     triggers {
         pollSCM '*/5 * * * *'
