@@ -40,7 +40,7 @@ pipeline {
                 echo 'Deliver....'
                 sh '''
                 cd myapp
-                docker build -t my-app:${BUILD_ID} -f sprysio/jenkins_test:${BUILD_ID} .
+                docker build -t my-app:${BUILD_ID} -f Dockerfile .
                 '''
             }
         }
