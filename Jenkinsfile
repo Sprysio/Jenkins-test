@@ -51,7 +51,8 @@ pipeline {
             steps {
                 echo 'Deliver....'
                 sh '''
-                echo "doing delivery stuff.."
+                cd myapp
+                docker build -f sprysio/jenkins_test .
                 '''
             }
         }
