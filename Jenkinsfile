@@ -1,26 +1,18 @@
 pipeline {
     agent { 
-        docker {
-            image 'sprysio/python_agent:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock' 
-            }
+        label 'docker-agent-alpine'
       }
     triggers {
         pollSCM '*/5 * * * *'
-      }
-    environment {
-        VENV_DIR = 'venv'
-    }  
+      } 
       
     stages {
-        stage('Build') {
+        stage('Build docker image') {
             steps {
-                echo "Building.."
+                echo 'Build docker image....'
                 sh '''
-                python3 -m venv ${VENV_DIR}
-                source ${VENV_DIR}/bin/activate
                 cd myapp
-                pip install -r requirements.txt
+                docker build -t my-app:${env.BUILD_ID} -f Dockerfile .
                 '''
             }
         }
@@ -28,20 +20,8 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                source ${VENV_DIR}/bin/activate
                 cd myapp
-                python3 hello.py
-                python3 hello.py --name=Forsen
-                '''
-            }
-        }
-        stage('Deliver') {
-            
-            steps {
-                echo 'Deliver....'
-                sh '''
-                cd myapp
-                docker build -t my-app:${BUILD_ID} -f Dockerfile .
+                docker run -d my-app:${env.BUILD_ID}
                 '''
             }
         }
