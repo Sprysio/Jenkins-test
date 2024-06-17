@@ -50,7 +50,7 @@ pipeline {
         stage('Deliver') {
             agent{
                 docker{
-                    label 'docker'
+                    label 'docker-agent-python3'
                     image 'jenkinsci/docker-inbound-agent'
                     args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
