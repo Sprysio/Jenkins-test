@@ -13,6 +13,15 @@ pipeline {
     }  
       
     stages {
+        stage('Prepare') {
+            steps {
+                echo "Preparing environment..."
+                sh '''
+                # Install Docker CLI tools
+                apk add --no-cache docker-cli
+                '''
+            }
+        }
         stage('Build') {
             steps {
                 echo "Building.."
