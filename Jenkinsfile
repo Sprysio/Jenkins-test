@@ -34,8 +34,8 @@ pipeline {
                 # Install Docker CLI if not already installed
                 if ! command -v docker &> /dev/null; then
                     echo "Docker not found, installing..."
-                    apt-get update
-                    apt-get install -y docker.io
+                    sudo apt-get update
+                    sudo apt-get install -y docker.io
                 else
                     echo "Docker is already installed"
                 fi
@@ -67,7 +67,7 @@ pipeline {
                 echo 'Deliver....'
                 sh '''
                 cd myapp
-                docker build -t my-app -f sprysio/jenkins_test .
+                sudo docker build -t my-app -f sprysio/jenkins_test .
                 '''
             }
         }
