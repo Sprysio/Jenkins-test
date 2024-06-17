@@ -1,7 +1,7 @@
 pipeline {
     agent { 
         docker {
-            image 'docker:20.10.12'
+            image 'sprysio/python_agent:docker_cli'
             args '-v /var/run/docker.sock:/var/run/docker.sock' 
         }
     }
