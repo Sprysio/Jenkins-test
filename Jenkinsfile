@@ -1,7 +1,7 @@
 pipeline {
     agent { 
         docker {
-            image 'sprysio/python_agent:python'
+            image 'sprysio/python_agent:latest'
             args '-v /var/run/docker.sock:/var/run/docker.sock' 
             }
       }
@@ -13,15 +13,6 @@ pipeline {
     }  
       
     stages {
-        stage('Prepare') {
-            steps {
-                echo "Preparing environment..."
-                sh '''
-                # Install Docker CLI tools
-                apk add --no-cache docker-cli
-                '''
-            }
-        }
         stage('Build') {
             steps {
                 echo "Building.."
