@@ -8,12 +8,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 echo 'Build docker image....'
-                script {
-                    // Ensure the Docker environment is set up correctly
-                    withDockerEnv {
-                        sh 'docker build -t my-app:${BUILD_ID} -f Dockerfile .'
-                    }
-                }
+                sh 'docker build -t my-app:${BUILD_ID} -f Dockerfile .'
             }
         }
         stage('Test') {

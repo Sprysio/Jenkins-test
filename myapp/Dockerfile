@@ -2,7 +2,7 @@ FROM sprysio/python_agent:python
 
 WORKDIR /myapp
 
-COPY myapp/ .
+COPY . .
 
 RUN python3 -m venv venv \
     && . venv/bin/activate \
