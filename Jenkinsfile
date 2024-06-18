@@ -1,9 +1,6 @@
 pipeline {
     agent { 
-        docker {
-            image 'sprysio/python_agent:docker_cli'
-            args '-v /var/run/docker.sock:/var/run/docker.sock' 
-        }
+        dockerfile true
     }
     triggers {
         pollSCM '*/5 * * * *'
@@ -15,7 +12,7 @@ pipeline {
                 echo 'Build docker image....'
                 sh '''
                 cd myapp
-                docker build -t my-app:${BUILD_ID} -f Dockerfile .
+                python3 --version
                 '''
             }
         }
@@ -24,7 +21,8 @@ pipeline {
                 echo "Testing.."
                 sh '''
                 cd myapp
-                docker run my-app:${BUILD_ID}
+                python3 hello.py
+                python3 hello.py --name=Forsen
                 '''
             }
         }
