@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker{
+            image 'sprysio/python_agent:docker_cli'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     triggers {
         pollSCM '*/5 * * * *'
       } 
