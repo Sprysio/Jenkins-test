@@ -1,7 +1,5 @@
 pipeline {
-    agent { 
-        dockerfile true
-    }
+    agent any
     triggers {
         pollSCM '*/5 * * * *'
       } 
@@ -10,9 +8,12 @@ pipeline {
         stage('Build docker image') {
             steps {
                 echo 'Build docker image....'
-                sh '''
-                docker build -t my-app:${BUILD_ID} -f Dockerfile .
-                '''
+                script {
+                    // Ensure the Docker environment is set up correctly
+                    withDockerEnv {
+                        sh 'docker build -t my-app:${BUILD_ID} -f Dockerfile .'
+                    }
+                }
             }
         }
         stage('Test') {
