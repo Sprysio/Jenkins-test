@@ -1,6 +1,6 @@
 pipeline {
     agent { 
-        label 'docker-agent-python'
+        dockerfile true
     }
     triggers {
         pollSCM '*/5 * * * *'
@@ -11,9 +11,7 @@ pipeline {
             steps {
                 echo 'Build docker image....'
                 sh '''
-                ls -l
                 cd myapp
-                ls -l
                 python3 --version
                 '''
             }
