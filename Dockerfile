@@ -11,4 +11,4 @@ RUN python3 -m venv venv \
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s \ 
             --retries=3 CMD [ "python3", "hello.py" ]
 
-#CMD [ "sh", "-c", ". venv/bin/activate && python3 hello.py --name=Forsen" ]
+ENTRYPOINT ["/bin/bash", "-c", ". venv/bin/activate && exec \"$@\"", "--"]

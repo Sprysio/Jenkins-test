@@ -11,8 +11,7 @@ pipeline {
             steps {
                 echo 'Build docker image....'
                 sh '''
-                cd myapp
-                python3 --version
+                docker build -t my-app:${BUILD_ID} -f Dockerfile .
                 '''
             }
         }
@@ -21,8 +20,8 @@ pipeline {
                 echo "Testing.."
                 sh '''
                 cd myapp
-                python3 hello.py
-                python3 hello.py --name=Forsen
+                docker run --rm my-app:${BUILD_ID} python3 hello.py
+                docker run --rm my-app:${BUILD_ID} python3 hello.py --name=Forsen
                 '''
             }
         }
