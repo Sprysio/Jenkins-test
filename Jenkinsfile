@@ -36,7 +36,7 @@ pipeline {
                 echo 'pushing to dockerhub'
                 sh ''' 
                 cd myapp
-                docker build -t jenkins_test:${BUILD_ID} .
+                docker build -t sprysio/jenkins_test:${BUILD_ID} .
                 '''
             }
         }
@@ -49,7 +49,7 @@ pipeline {
                 sh '''
                 cd myapp
                 docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
-                docker push jenkins_test:${BUILD_ID} 
+                docker push sprysio/jenkins_test:${BUILD_ID} 
                 
                 '''
             }
