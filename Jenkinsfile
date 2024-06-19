@@ -12,7 +12,7 @@ pipeline {
                 echo 'Build docker image....'
                 sh '''
                 cd myapp
-                docker build -t my-app:${BUILD_ID} -f Dockerfile .
+                pip  install -r requirements.txt
                 '''
             }
         }
@@ -21,9 +21,33 @@ pipeline {
                 echo "Testing.."
                 sh '''
                 cd myapp
-                docker run --rm my-app:${BUILD_ID} python3 hello.py
-                docker run --rm my-app:${BUILD_ID} python3 hello.py --name=Forsen
+                python3 hello.py
+                python3 hello.py --name=Forsen
                 '''
+            }
+        }
+        stage('Build image'){
+            steps{
+                echo 'pushing to dockerhub'
+                sh ''' 
+                cd myapp
+                docker build -t jenkins_test:${BUILD_ID} 
+                '''
+            }
+        }
+        stage('Push dockerhub')
+        {
+            steps{
+                echo 'pushing to dockerhub'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                
+                sh '''
+                cd myapp
+                docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+                docker push jenkins_test:${BUILD_ID} 
+                
+                '''
+            }
             }
         }
     }
