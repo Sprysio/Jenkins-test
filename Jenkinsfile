@@ -13,7 +13,6 @@ pipeline {
                 sh '''
                 cd myapp
                 pip install --no-cache-dir -r requirements.txt --break-system-packages
-                d
                 '''
             }
         }
@@ -24,7 +23,6 @@ pipeline {
                 cd myapp
                 python3 hello.py
                 python3 hello.py --name=Forsen
-                
                 '''
             }
         }
