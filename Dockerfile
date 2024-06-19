@@ -2,7 +2,7 @@ FROM sprysio/python_agent:python
 
 WORKDIR /myapp
 
-COPY . .
+COPY /myapp .
 
 USER root
 

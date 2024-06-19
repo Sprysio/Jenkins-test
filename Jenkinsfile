@@ -12,10 +12,8 @@ pipeline {
                 echo 'Building....'
                 sh '''
                 cd myapp
-                python3 -m venv venv
-                . venv/bin/activate
-                pip  install -r requirements.txt
-                deactivate
+                pip install --no-cache-dir -r requirements.txt --break-system-packages
+                d
                 '''
             }
         }
@@ -24,16 +22,15 @@ pipeline {
                 echo "Testing.."
                 sh '''
                 cd myapp
-                . venv/bin/activate
                 python3 hello.py
                 python3 hello.py --name=Forsen
-                deactivate
+                
                 '''
             }
         }
         stage('Build image'){
             steps{
-                echo 'pushing to dockerhub'
+                echo 'bulding docker image'
                 sh ''' 
                 cd myapp
                 docker build -t sprysio/jenkins_test:${BUILD_ID} .
@@ -45,12 +42,11 @@ pipeline {
             steps{
                 echo 'pushing to dockerhub'
                 withCredentials([usernamePassword(credentialsId: 'fbc65aa1-fe5a-4e2d-89c8-ec8fe49c1180', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                
                 sh '''
                 cd myapp
                 docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                 docker push sprysio/jenkins_test:${BUILD_ID} 
-                
+                docker push sprysio/jenkins_test:latest
                 '''
             }
             }
