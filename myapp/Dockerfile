@@ -6,9 +6,12 @@ COPY . .
 
 USER root
 
-RUN python3 -m venv /myapp/venv 
-RUN /myapp/venv/bin/pip install --no-cache-dir -r /myapp/requirements.txt
-
+# Install required packages and create virtual environment
+RUN python3 -m venv /myapp/venv && \
+    /myapp/venv/bin/python -m ensurepip && \
+    /myapp/venv/bin/pip install --upgrade pip && \
+    /myapp/venv/bin/pip install --no-cache-dir -r /myapp/requirements.txt
+    
 USER jenkins
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s \ 
