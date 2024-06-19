@@ -31,6 +31,7 @@ pipeline {
                 echo 'bulding docker image'
                 sh ''' 
                 docker build -t sprysio/jenkins_test:${BUILD_ID} .
+                docker tag sprysio/jenkins_test:${BUILD_ID} sprysio/jenkins_test:latest
                 '''
             }
         }
