@@ -7,14 +7,15 @@ pipeline {
       } 
       
     stages {
-        stage('Build docker image') {
+        stage('Build') {
             steps {
-                echo 'Build docker image....'
+                echo 'Building....'
                 sh '''
                 cd myapp
                 python3 -m venv venv
                 . venv/bin/activate
                 pip  install -r requirements.txt
+                deactivate
                 '''
             }
         }
@@ -23,8 +24,10 @@ pipeline {
                 echo "Testing.."
                 sh '''
                 cd myapp
+                . venv/bin/activate
                 python3 hello.py
                 python3 hello.py --name=Forsen
+                deactivate
                 '''
             }
         }
@@ -33,7 +36,7 @@ pipeline {
                 echo 'pushing to dockerhub'
                 sh ''' 
                 cd myapp
-                docker build -t jenkins_test:${BUILD_ID} 
+                docker build -t jenkins_test:${BUILD_ID} .
                 '''
             }
         }
